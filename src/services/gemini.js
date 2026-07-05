@@ -37,14 +37,14 @@ ${tradesSummary}
 30-day FMV trend (daily averages in USD):
 ${fmvSummary}
 
-Respond ONLY with this exact JSON (no markdown, no explanation):
+Respond ONLY with this exact JSON (no markdown, no explanation). Ensure the insight string contains NO line breaks:
 {
   "trend": "Rising" | "Stable" | "Cooling",
   "fairValueLow": number (USD cents),
   "fairValueHigh": number (USD cents),
   "buyWindow": "Now" | "Wait" | "Pass",
   "rating": number (1-5),
-  "insight": "2-3 sentence collector analysis"
+  "insight": "2-3 sentence collector analysis (SINGLE LINE STRING NO LINE BREAKS)"
 }`;
 
   const body = {
@@ -69,9 +69,13 @@ Respond ONLY with this exact JSON (no markdown, no explanation):
 
     const data = await res.json();
     const rawText = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
-    const cleaned = rawText.replace(/```json|```/gi, '').trim();
+    const jsonMatch = rawText.match(/\{[\s\S]*\}/);
+    const cleaned = jsonMatch ? jsonMatch[0] : rawText.replace(/```json|```/gi, '').trim();
     
-    const parsed = JSON.parse(cleaned);
+    // Replace unescaped newlines in the string
+    const safeCleaned = cleaned.replace(/\n/g, ' ');
+
+    const parsed = JSON.parse(safeCleaned);
 
     const requiredKeys = ['trend', 'fairValueLow', 'fairValueHigh', 'buyWindow', 'rating', 'insight'];
     for (const key of requiredKeys) {

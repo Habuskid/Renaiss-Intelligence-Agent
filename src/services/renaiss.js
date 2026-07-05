@@ -40,14 +40,17 @@ export async function getCardDetail(game, set, card) {
   } catch (err) {
     // Mock Details
     return {
-      name: game === 'magic' ? "Black Lotus - Unlimited" : "Charizard - Holographic",
-      game: game === 'magic' ? "Magic" : "Pokemon",
-      setName: set === 'unlimited' ? "Unlimited Edition" : "Base Set",
-      gradeLabel: game === 'magic' ? "BGS 7.5 Near Mint" : "PSA 8 Near Mint",
-      priceUsdCents: game === 'magic' ? 1250000 : 45000,
-      deltas: { d7: 2.1, d30: 12.5, d365: 45.2 },
+      card: {
+        name: game === 'magic' ? "Black Lotus - Unlimited" : "Charizard - Holographic",
+        game: game === 'magic' ? "Magic" : "Pokemon",
+        setName: set === 'unlimited' ? "Unlimited Edition" : "Base Set",
+        gradeLabel: game === 'magic' ? "BGS 7.5 Near Mint" : "PSA 8 Near Mint",
+        priceUsdCents: game === 'magic' ? 1250000 : 45000,
+        deltas: { d7: 2.1, d30: 12.5, d365: 45.2 },
+        confidence: 'high'
+      },
       observationCount: 142,
-      sourceCount: 4
+      sourceBreakdown: [1, 2, 3, 4]
     };
   }
 }
