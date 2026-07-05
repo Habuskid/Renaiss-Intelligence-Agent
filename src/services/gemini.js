@@ -37,14 +37,14 @@ ${tradesSummary}
 30-day FMV trend (daily averages in USD):
 ${fmvSummary}
 
-Respond ONLY with this exact JSON (no markdown, no explanation). Ensure the insight string contains NO line breaks:
+Respond ONLY with this exact JSON (no markdown, no explanation). Ensure the insight string contains NO line breaks and NO double quotes:
 {
   "trend": "Rising" | "Stable" | "Cooling",
   "fairValueLow": number (USD cents),
   "fairValueHigh": number (USD cents),
   "buyWindow": "Now" | "Wait" | "Pass",
   "rating": number (1-5),
-  "insight": "2-3 sentence collector analysis (SINGLE LINE STRING NO LINE BREAKS)"
+  "insight": "2-3 sentence collector analysis (SINGLE LINE STRING, NO LINE BREAKS, NO DOUBLE QUOTES)"
 }`;
 
   const body = {
