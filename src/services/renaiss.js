@@ -1,8 +1,21 @@
 const BASE = 'https://api.renaissos.com';
 
+function getAuthHeaders() {
+  const key = import.meta.env.VITE_RENAISS_API_KEY;
+  const secret = import.meta.env.VITE_RENAISS_API_SECRET;
+  const headers = {};
+  if (key && secret) {
+    headers['X-Api-Key'] = key;
+    headers['X-Api-Secret'] = secret;
+  }
+  return headers;
+}
+
 export async function searchCards(query) {
   try {
-    const res = await fetch(`${BASE}/v1/search?q=${encodeURIComponent(query)}&limit=8`);
+    const res = await fetch(`${BASE}/v1/search?q=${encodeURIComponent(query)}&limit=8`, {
+      headers: getAuthHeaders()
+    });
     if (!res.ok) throw new Error();
     const data = await res.json();
     return data.results || [];
@@ -34,7 +47,9 @@ export async function searchCards(query) {
 
 export async function getCardDetail(game, set, card) {
   try {
-    const res = await fetch(`${BASE}/v1/cards/${game}/${set}/${card}`);
+    const res = await fetch(`${BASE}/v1/cards/${game}/${set}/${card}`, {
+      headers: getAuthHeaders()
+    });
     if (!res.ok) throw new Error();
     return await res.json();
   } catch (err) {
@@ -57,7 +72,9 @@ export async function getCardDetail(game, set, card) {
 
 export async function getCardTrades(game, set, card) {
   try {
-    const res = await fetch(`${BASE}/v1/cards/${game}/${set}/${card}/trades?limit=20&scope=grade`);
+    const res = await fetch(`${BASE}/v1/cards/${game}/${set}/${card}/trades?limit=20&scope=grade`, {
+      headers: getAuthHeaders()
+    });
     if (!res.ok) throw new Error();
     const data = await res.json();
     return data.trades || [];
@@ -75,7 +92,9 @@ export async function getCardTrades(game, set, card) {
 
 export async function getFmvSeries(game, set, card) {
   try {
-    const res = await fetch(`${BASE}/v1/cards/${game}/${set}/${card}/fmv-series?window=30`);
+    const res = await fetch(`${BASE}/v1/cards/${game}/${set}/${card}/fmv-series?window=30`, {
+      headers: getAuthHeaders()
+    });
     if (!res.ok) throw new Error();
     const data = await res.json();
     return data.points || [];
@@ -91,7 +110,9 @@ export async function getFmvSeries(game, set, card) {
 
 export async function getFeaturedCards() {
   try {
-    const res = await fetch(`${BASE}/v1/cards/featured?limit=6`);
+    const res = await fetch(`${BASE}/v1/cards/featured?limit=6`, {
+      headers: getAuthHeaders()
+    });
     if (!res.ok) throw new Error();
     const data = await res.json();
     if (data.cards && data.cards.length > 0) return data.cards;
