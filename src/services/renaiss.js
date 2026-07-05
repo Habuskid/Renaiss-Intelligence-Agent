@@ -58,24 +58,6 @@ export async function getCardDetail(game, set, card) {
     if (!res.ok) throw new Error();
     return await res.json();
   } catch (err) {
-    // Specific Mock Data for Hackathon Demo Lookup
-    if (game === '76333072783128186272754750985478837798468418601303296431770631828472915519858') {
-      return {
-        card: {
-          name: "Pikachu Illustrator - CoroCoro Promo",
-          game: "Pokemon",
-          setName: "CoroCoro Comics Promo",
-          gradeLabel: "PSA 9 Mint",
-          priceUsdCents: 525000000,
-          deltas: { d7: 5.4, d30: 18.2, d365: 110.5 },
-          confidence: 'high',
-          imageUrlLg: "https://images.unsplash.com/photo-1613771404784-3a5686aa2be3?auto=format&fit=crop&q=80&w=600&h=800"
-        },
-        observationCount: 3,
-        sourceBreakdown: [1, 2]
-      };
-    }
-
     // Default Mock Details
     return {
       card: {
@@ -108,15 +90,12 @@ export async function getCardTrades(game, set, card) {
     return data.trades || [];
   } catch (err) {
     // Mock Trades
-    const isPikachu = game === '76333072783128186272754750985478837798468418601303296431770631828472915519858';
-    let basePrice = game === 'magic' ? 1250000 : 45000;
-    if (isPikachu) basePrice = 525000000;
-    
-    return Array.from({ length: isPikachu ? 3 : 10 }).map((_, i) => ({
-      date: new Date(Date.now() - i * 86400000 * 30).toISOString(),
-      priceUsdCents: basePrice - Math.floor(Math.random() * (isPikachu ? 5000000 : 5000)),
-      marketplace: i % 2 === 0 ? "Goldin" : "Heritage Auctions",
-      gradeLabel: isPikachu ? "PSA 9" : (game === 'magic' ? "BGS 7.5" : "PSA 8")
+    const basePrice = game === 'magic' ? 1250000 : 45000;
+    return Array.from({ length: 10 }).map((_, i) => ({
+      date: new Date(Date.now() - i * 86400000 * 3).toISOString(),
+      priceUsdCents: basePrice - Math.floor(Math.random() * 5000),
+      marketplace: i % 2 === 0 ? "eBay" : "Goldin",
+      gradeLabel: game === 'magic' ? "BGS 7.5" : "PSA 8"
     }));
   }
 }
@@ -136,13 +115,10 @@ export async function getFmvSeries(game, set, card) {
     return data.points || [];
   } catch (err) {
     // Mock Series
-    const isPikachu = game === '76333072783128186272754750985478837798468418601303296431770631828472915519858';
-    let basePrice = game === 'magic' ? 1200000 : 40000;
-    if (isPikachu) basePrice = 500000000;
-
+    const basePrice = game === 'magic' ? 1200000 : 40000;
     return Array.from({ length: 30 }).map((_, i) => ({
       date: new Date(Date.now() - (29 - i) * 86400000).toISOString(),
-      usdCents: basePrice + (i * (isPikachu ? 200000 : 200)) + Math.floor(Math.random() * (isPikachu ? 100000 : 1000))
+      usdCents: basePrice + (i * 200) + Math.floor(Math.random() * 1000)
     }));
   }
 }
