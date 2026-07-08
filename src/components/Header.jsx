@@ -8,7 +8,7 @@ export default function Header() {
       </div>
       <div>
         <h1 className="font-display font-bold text-base text-stone-900 tracking-tight">
-          Renaiss Intelligence
+          Renaiss Intelligence Agent
         </h1>
         <p className="text-[11px] text-stone-400 tracking-wider mt-0.5 uppercase font-medium">
           Pokémon · One Piece · AI Analysis
