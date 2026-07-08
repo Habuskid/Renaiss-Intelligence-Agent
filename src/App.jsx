@@ -67,7 +67,7 @@ export default function App() {
                 Pricing Intelligence for <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Real World Assets</span>
               </h1>
               <p className="text-stone-500 max-w-xl mx-auto mb-10">
-                The first AI-driven terminal on BNB Chain to analyze physical collectibles. Search by asset name or paste an NFT smart contract to determine its fair market value.
+                The first AI-driven terminal on BNB Chain to analyze physical collectibles. Search by asset name or paste a Renaiss URL to determine its fair market value.
               </p>
             </div>
           )}
