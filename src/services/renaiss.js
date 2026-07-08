@@ -25,7 +25,6 @@ export async function searchCards(query) {
 }
 
 export async function getCardDetail(game, set, card) {
-  try {
   let url = `${BASE}/v1/cards/${game}/${set}/${card}`;
   if (!set && !card) {
     const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(game);
