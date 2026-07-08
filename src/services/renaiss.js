@@ -26,19 +26,16 @@ export async function searchCards(query) {
 
 export async function getCardDetail(game, set, card) {
   try {
-    let url = `${BASE}/v1/cards/${game}/${set}/${card}`;
-    if (!set && !card) {
-      const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(game);
-      url = isUuid ? `${BASE}/v1/cards/by-id/${game}` : `${BASE}/v1/cards/by-renaiss-id/${game}`;
-    }
-    const res = await fetch(url, {
-      headers: getAuthHeaders()
-    });
-    if (!res.ok) throw new Error();
-    return await res.json();
-  } catch (err) {
-    throw err;
+  let url = `${BASE}/v1/cards/${game}/${set}/${card}`;
+  if (!set && !card) {
+    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(game);
+    url = isUuid ? `${BASE}/v1/cards/by-id/${game}` : `${BASE}/v1/cards/by-renaiss-id/${game}`;
   }
+  const res = await fetch(url, {
+    headers: getAuthHeaders()
+  });
+  if (!res.ok) throw new Error();
+  return await res.json();
 }
 
 export async function getCardTrades(game, set, card) {

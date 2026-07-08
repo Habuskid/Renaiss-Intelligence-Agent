@@ -34,7 +34,7 @@ export default function AiAnalysis({ card, details, trades, fmvSeries }) {
       }
     };
     runAnalysis();
-  }, [card, details, trades, fmvSeries]);
+  }, [card, details, trades, fmvSeries, analysis, loading]);
 
   const getBuyWindowColor = (window) => {
     if (window === 'Now') return 'text-green-600 font-bold';
