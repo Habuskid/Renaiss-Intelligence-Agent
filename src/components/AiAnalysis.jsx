@@ -22,13 +22,41 @@ export default function AiAnalysis({ card, details, trades, fmvSeries }) {
     if (analysis || loading || error) return;
     
     const runAnalysis = async () => {
+      // 1. Check Cache First
+      const cacheKey = `ai_analysis_${card.href || details?.name}`;
+      const cached = localStorage.getItem(cacheKey);
+      
+      if (cached) {
+        try {
+          const parsedCache = JSON.parse(cached);
+          // Only use cache if it's less than 1 hour old
+          if (Date.now() - parsedCache.timestamp < 3600000) {
+            setAnalysis(parsedCache.data);
+            return;
+          }
+        } catch (e) {
+          // Ignore cache parse errors
+        }
+      }
+
       setLoading(true);
       setError(null);
       try {
         const result = await analyzeCard({ cardDetail: details, trades, fmvSeries });
         setAnalysis(result);
+        
+        // 2. Save to Cache
+        localStorage.setItem(cacheKey, JSON.stringify({
+          timestamp: Date.now(),
+          data: result
+        }));
       } catch (err) {
-        setError(err.message || 'An error occurred during analysis.');
+        // If we hit a rate limit, show a much friendlier error
+        if (err.message?.includes('Quota exceeded') || err.message?.includes('429')) {
+          setError('The AI is currently analyzing too many requests. Please wait a moment before trying again.');
+        } else {
+          setError(err.message || 'An error occurred during analysis.');
+        }
       } finally {
         setLoading(false);
       }
