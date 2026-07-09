@@ -7,7 +7,7 @@ export default function LandingPage({ onLaunch, featuredCards = [] }) {
     <div className="max-w-7xl mx-auto px-6 py-12 lg:py-24 animate-fade-up relative">
       
       {/* Floating Background Cards */}
-      <div className="absolute inset-0 pointer-events-none z-[-5] overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none z-[-5] overflow-hidden hidden md:block">
         {bgCards.map((card, index) => {
           // Pre-defined scattered positions for up to 5 background cards
           const positions = [

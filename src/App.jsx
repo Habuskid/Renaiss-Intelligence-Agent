@@ -123,8 +123,9 @@ export default function App() {
           <div className="mt-8">
             {loadingData ? (
               <div className="bg-white/80 backdrop-blur-sm rounded-xl p-12 border border-stone-200/50 shadow-sm text-center flex flex-col items-center min-h-[300px] justify-center">
-                <ArrowPathIcon className="w-8 h-8 text-blue-600 animate-spin mb-4" />
-                <p className="text-stone-500">Retrieving asset data from Renaiss Protocol...</p>
+                <div className="card-scanner mb-6 shadow-md"></div>
+                <p className="text-stone-900 font-bold mb-1">Scanning Protocol Database</p>
+                <p className="text-stone-500 text-sm">Retrieving verified asset data and market history...</p>
               </div>
             ) : cardDetails?.error === 'rate_limit' ? (
               <div className="bg-red-50/90 backdrop-blur-sm rounded-xl p-12 border border-red-200 shadow-sm text-center min-h-[300px] flex flex-col items-center justify-center animate-fade-up">

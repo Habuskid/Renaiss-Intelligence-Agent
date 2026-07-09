@@ -77,10 +77,10 @@ export default function AiAnalysis({ card, details, trades, fmvSeries }) {
 
   if (loading) {
     return (
-      <div className="ai-border-glow bg-white/90 backdrop-blur-sm rounded-xl p-8 border border-stone-200/50 shadow-xl flex flex-col items-center justify-center text-center h-full min-h-[300px] transition-all">
-        <ArrowPathIcon className="w-8 h-8 text-blue-600 animate-spin mb-4" />
-        <p className="text-stone-900 font-medium">Analyzing 10k+ data points...</p>
-        <p className="text-sm text-stone-500 mt-1">Please wait while the AI reviews the market data.</p>
+      <div className="ai-border-glow bg-white/90 backdrop-blur-sm rounded-2xl p-8 border border-stone-200/50 shadow-xl flex flex-col items-center justify-center text-center h-full min-h-[300px] transition-all">
+        <div className="card-scanner mb-6 shadow-md"></div>
+        <p className="text-stone-900 font-bold">Analyzing 10k+ Data Points</p>
+        <p className="text-sm text-stone-500 mt-1">AI is actively reviewing market data...</p>
       </div>
     );
   }
