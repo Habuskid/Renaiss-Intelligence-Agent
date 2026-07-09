@@ -65,9 +65,9 @@ export default function AiAnalysis({ card, details, trades, fmvSeries }) {
       setUsageData({ count: newCount, resetTime: newResetTime });
       localStorage.setItem('renaiss_ai_usage', newCount.toString());
     } catch (err) {
-        // If we hit a rate limit, show a much friendlier error
-        if (err.message?.includes('Quota exceeded') || err.message?.includes('429')) {
-          setError('The AI is currently analyzing too many requests. Please wait a moment before trying again.');
+        // If we hit a rate limit or high demand, show a much friendlier error
+        if (err.message?.includes('Quota exceeded') || err.message?.includes('429') || err.message?.includes('demand')) {
+          setError('The AI server is currently experiencing extremely high demand. Please wait a moment before trying again.');
         } else {
           setError(err.message || 'An error occurred during analysis.');
         }

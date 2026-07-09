@@ -69,8 +69,8 @@ Respond ONLY with this exact JSON (no markdown, no explanation). Ensure the insi
       if (!res.ok) {
         const errData = await res.json().catch(() => ({}));
         
-        // If it's a 429 or Quota error, and we have retries left, wait and try again
-        if ((res.status === 429 || errData.error?.message?.includes('Quota') || errData.error?.message?.includes('rate')) && attempt < MAX_RETRIES) {
+        // If it's a 429, 503, Quota error, or high demand, and we have retries left, wait and try again
+        if ((res.status === 429 || res.status === 503 || errData.error?.message?.includes('Quota') || errData.error?.message?.includes('rate') || errData.error?.message?.includes('demand')) && attempt < MAX_RETRIES) {
           attempt++;
           const delayMs = Math.pow(2, attempt) * 1000; // 2s, 4s, 8s
           console.warn(`Gemini API rate limited. Retrying in ${delayMs}ms... (Attempt ${attempt} of ${MAX_RETRIES})`);
