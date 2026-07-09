@@ -34,9 +34,11 @@ Renaiss Intelligence Agent is a React-based web application that serves as an AI
    ```bash
    npm install
    ```
-3. Create a `.env` file in the root directory and add your Gemini API key:
+3. Create a `.env` file in the root directory and add your API credentials:
    ```env
-   VITE_GEMINI_API_KEY=your_api_key_here
+   VITE_GEMINI_API_KEY=your_gemini_api_key_here
+   VITE_RENAISS_API_KEY=your_renaiss_api_key_here
+   VITE_RENAISS_API_SECRET=your_renaiss_api_secret_here
    ```
 4. Start the development server:
    ```bash
