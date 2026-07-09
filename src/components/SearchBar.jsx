@@ -39,7 +39,7 @@ export default function SearchBar({ onResults, onSearching }) {
         type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        placeholder="Search any card — Charizard, Luffy, Pikachu..."
+        placeholder="Enter asset name or ID to run terminal analysis..."
         className="w-full py-4 pl-12 pr-[100px] text-[15px] bg-white border-2 border-stone-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 placeholder:text-stone-400 shadow-sm transition-all"
       />
 

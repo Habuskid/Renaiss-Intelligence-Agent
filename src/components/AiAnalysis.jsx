@@ -102,13 +102,22 @@ export default function AiAnalysis({ card, details, trades, fmvSeries }) {
 
   if (error) {
     return (
-      <div className="bg-red-50/90 backdrop-blur-sm rounded-xl p-8 border border-red-100 shadow-xl flex flex-col items-center justify-center text-center h-full min-h-[300px] animate-fade-up">
-        <p className="text-red-600 font-medium mb-4">{error}</p>
+      <div className="bg-stone-900 rounded-2xl p-8 shadow-xl flex flex-col items-center justify-center text-center h-full min-h-[300px] animate-fade-up relative overflow-hidden border border-red-500/20">
+        <div className="absolute inset-0 bg-red-500/5 mix-blend-overlay"></div>
+        <div className="w-12 h-12 bg-red-500/10 rounded-full flex items-center justify-center mb-4 border border-red-500/20">
+          <svg className="w-6 h-6 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+        </div>
+        <h3 className="text-lg font-bold text-white mb-2 tracking-wide">Analysis Paused</h3>
+        <p className="text-red-200/80 font-medium mb-6 max-w-[250px] leading-relaxed text-sm">
+          {error.includes('many requests') ? "System is analyzing too many active requests. Please stand by." : error}
+        </p>
         <button 
           onClick={() => setError(null)}
-          className="text-sm bg-white text-red-600 border border-red-200 px-4 py-2 rounded-lg hover:bg-red-50 transition-colors shadow-sm"
+          className="bg-white/10 hover:bg-white/20 text-white border border-white/10 px-6 py-2 rounded-full font-medium transition-all shadow-sm text-sm"
         >
-          Dismiss
+          Dismiss Alert
         </button>
       </div>
     );
@@ -148,9 +157,9 @@ export default function AiAnalysis({ card, details, trades, fmvSeries }) {
         <p className="text-sm text-stone-500 mb-8 max-w-[250px] leading-relaxed">Generate a fair market value range and conviction rating using live data.</p>
         <button 
           onClick={runAnalysis}
-          className="relative overflow-hidden bg-stone-900 text-white px-8 py-3.5 rounded-full font-bold shadow-[0_4px_14px_0_rgba(28,25,23,0.39)] hover:shadow-[0_6px_20px_rgba(28,25,23,0.23)] hover:bg-[rgba(41,37,36,1)] hover:-translate-y-1 transition-all duration-300 flex items-center gap-2 mb-4 group"
+          className="relative overflow-hidden bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-600 animate-gradient-xy text-white px-8 py-3.5 rounded-full font-bold shadow-[0_0_30px_rgba(79,70,229,0.4)] hover:shadow-[0_0_40px_rgba(79,70,229,0.6)] hover:scale-105 hover:-translate-y-1 transition-all duration-300 flex items-center gap-2 mb-4 group border border-white/20"
         >
-          <div className="absolute inset-0 w-full h-full border border-white/20 rounded-full scale-[0.9] opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-500"></div>
+          <div className="absolute inset-0 bg-white/20 translate-y-full hover:translate-y-0 transition-transform duration-300 ease-in-out mix-blend-overlay"></div>
           <span className="relative z-10 flex items-center gap-2">
             <AiIcon className="w-5 h-5" />
             Generate Insight ({3 - usageData.count} left)
@@ -180,31 +189,31 @@ export default function AiAnalysis({ card, details, trades, fmvSeries }) {
 
       <div className="grid grid-cols-2 gap-4 mb-6">
         <div className="bg-stone-50/50 backdrop-blur-sm p-4 rounded-xl border border-stone-100 shadow-sm animate-fade-up delay-100 hover:-translate-y-1 hover:shadow-md transition-all duration-300">
-          <p className="text-[11px] font-bold text-stone-500 uppercase tracking-widest">Fair Value Range</p>
+          <p className="text-[11px] font-bold text-stone-700 uppercase tracking-widest">Fair Value Range</p>
           <p className="text-lg font-bold text-stone-900 mt-1.5">
             {formatUSD(analysis.fairValueLow)} - {formatUSD(analysis.fairValueHigh)}
           </p>
         </div>
         <div className="bg-stone-50/50 backdrop-blur-sm p-4 rounded-xl border border-stone-100 shadow-sm animate-fade-up delay-200 hover:-translate-y-1 hover:shadow-md transition-all duration-300">
-          <p className="text-[11px] font-bold text-stone-500 uppercase tracking-widest">Buy Window</p>
+          <p className="text-[11px] font-bold text-stone-700 uppercase tracking-widest">Buy Window</p>
           <p className={`text-lg mt-1.5 ${getBuyWindowColor(analysis.buyWindow)}`}>
             {analysis.buyWindow}
           </p>
         </div>
         <div className="bg-stone-50/50 backdrop-blur-sm p-4 rounded-xl border border-stone-100 shadow-sm animate-fade-up delay-300 hover:-translate-y-1 hover:shadow-md transition-all duration-300 flex flex-col justify-center">
-          <p className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mb-1.5">Market Trend</p>
+          <p className="text-[11px] font-bold text-stone-700 uppercase tracking-widest mb-1.5">Market Trend</p>
           <div>
             <TrendBadge trend={analysis.trend} />
           </div>
         </div>
         <div className="bg-stone-50/50 backdrop-blur-sm p-4 rounded-xl border border-stone-100 shadow-sm animate-fade-up delay-400 hover:-translate-y-1 hover:shadow-md transition-all duration-300 flex flex-col justify-center">
-          <p className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mb-1.5">Conviction Rating</p>
+          <p className="text-[11px] font-bold text-stone-700 uppercase tracking-widest mb-1.5">Conviction Rating</p>
           <StarRating rating={analysis.rating} />
         </div>
       </div>
 
       <div className="mt-auto animate-fade-up delay-400">
-        <p className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mb-3 border-b border-stone-100 pb-2">Analyst Insight</p>
+        <p className="text-[11px] font-bold text-stone-700 uppercase tracking-widest mb-3 border-b border-stone-100 pb-2">Analyst Insight</p>
         <div className="p-2">
           <p className="text-sm text-stone-800 leading-relaxed font-medium">
             {analysis.insight}
