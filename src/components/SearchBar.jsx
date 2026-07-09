@@ -9,30 +9,30 @@ export default function SearchBar({ onResults, onSearching }) {
 
   const suggestions = ['Charizard', 'Luffy', 'Pikachu', 'Cornerstone Mask Ogerpon', 'Blue-Eyes'];
 
-  useEffect(() => {
-    if (query.trim().length < 2) {
+  const executeSearch = async (searchQuery) => {
+    if (searchQuery.trim().length < 2) {
       onResults([]);
       return;
     }
+    
+    setLoading(true);
+    if (onSearching) onSearching(true);
+    
+    try {
+      const trimmed = searchQuery.trim();
+      const results = await searchCards(trimmed);
+      onResults(results);
+    } catch (err) {
+      onResults([]);
+    } finally {
+      setLoading(false);
+      if (onSearching) onSearching(false);
+    }
+  };
 
-    const handler = setTimeout(async () => {
-      setLoading(true);
-      if (onSearching) onSearching(true);
-      
-      try {
-        const trimmed = query.trim();
-        const results = await searchCards(trimmed);
-        onResults(results);
-      } catch (err) {
-        onResults([]);
-      } finally {
-        setLoading(false);
-        if (onSearching) onSearching(false);
-      }
-    }, 400);
-
-    return () => clearTimeout(handler);
-  }, [query, onResults, onSearching]);
+  const handleSearchClick = () => {
+    executeSearch(query);
+  };
 
   return (
     <div className="relative w-full">
@@ -42,7 +42,11 @@ export default function SearchBar({ onResults, onSearching }) {
         <input
           type="text"
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          onChange={(e) => {
+            setQuery(e.target.value);
+            if (e.target.value.trim().length === 0) onResults([]);
+          }}
+          onKeyDown={(e) => e.key === 'Enter' && handleSearchClick()}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setTimeout(() => setIsFocused(false), 200)}
           placeholder="Enter asset name to run terminal analysis..."
@@ -57,12 +61,15 @@ export default function SearchBar({ onResults, onSearching }) {
           {!loading && query.length > 0 && (
             <XMarkIcon 
               className="w-4 h-4 text-stone-400 hover:text-stone-600 cursor-pointer transition-colors"
-              onClick={() => setQuery('')}
+              onClick={() => {
+                setQuery('');
+                onResults([]);
+              }}
             />
           )}
 
           <button 
-            onClick={() => {}} 
+            onClick={handleSearchClick}
             className="bg-stone-900 text-white px-4 h-full rounded-lg text-sm font-medium hover:bg-stone-800 transition-colors shadow-sm"
           >
             Search
@@ -79,6 +86,7 @@ export default function SearchBar({ onResults, onSearching }) {
                 onClick={() => {
                   setQuery(suggestion);
                   setIsFocused(false);
+                  executeSearch(suggestion);
                 }}
                 className="w-full text-left px-4 py-2.5 hover:bg-stone-50 text-[15px] text-stone-700 font-medium transition-colors flex items-center gap-3"
               >

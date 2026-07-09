@@ -4,11 +4,11 @@ export default function FeaturedCards({ cards, onSelect }) {
   if (!cards || cards.length === 0) return null;
 
   return (
-    <div className="mt-12 animate-fade-up delay-100">
+    <div className="mt-12 animate-fade-up">
       <div className="flex items-center gap-2 mb-6">
         <ArrowTrendingUpIcon className="w-5 h-5 text-indigo-500" />
         <h2 className="text-lg font-display font-bold text-stone-900">
-          Trending Assets on BNB Chain
+          Popular Collectibles
         </h2>
       </div>
 
@@ -30,7 +30,6 @@ export default function FeaturedCards({ cards, onSelect }) {
               rounded-xl p-4 cursor-pointer shadow-md
               hover:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.3)] hover:-translate-y-6 hover:scale-110 hover:border-indigo-300/80
               transition-all duration-500 ease-out card-shine
-              delay-${(idx + 1) * 100}
               animate-fade-up
             `}
           >

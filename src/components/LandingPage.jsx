@@ -9,13 +9,12 @@ export default function LandingPage({ onLaunch, featuredCards = [] }) {
       {/* Floating Background Cards */}
       <div className="absolute inset-0 pointer-events-none z-[-5] overflow-hidden hidden md:block">
         {bgCards.map((card, index) => {
-          // Pre-defined scattered positions for up to 5 background cards
           const positions = [
-            { top: '5%', left: '5%', delay: '0s', scale: '0.8', rotate: '-12deg' },
-            { top: '15%', right: '5%', delay: '1.5s', scale: '0.9', rotate: '15deg' },
-            { bottom: '20%', left: '10%', delay: '0.5s', scale: '0.85', rotate: '-8deg' },
-            { bottom: '10%', right: '15%', delay: '2s', scale: '0.75', rotate: '10deg' },
-            { top: '40%', right: '-5%', delay: '1s', scale: '0.8', rotate: '-5deg' },
+            { top: '10%', left: '10%', delay: '0s', scale: '0.8', rotate: '-12deg' },
+            { top: '20%', right: '10%', delay: '1.5s', scale: '0.9', rotate: '15deg' },
+            { bottom: '30%', left: '15%', delay: '0.5s', scale: '0.85', rotate: '-8deg' },
+            { bottom: '35%', right: '20%', delay: '2s', scale: '0.75', rotate: '10deg' },
+            { top: '50%', right: '5%', delay: '1s', scale: '0.8', rotate: '-5deg' },
           ];
           const pos = positions[index] || positions[0];
 

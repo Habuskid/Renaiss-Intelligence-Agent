@@ -102,20 +102,19 @@ export default function AiAnalysis({ card, details, trades, fmvSeries }) {
 
   if (error) {
     return (
-      <div className="bg-stone-900 rounded-2xl p-8 shadow-xl flex flex-col items-center justify-center text-center h-full min-h-[300px] animate-fade-up relative overflow-hidden border border-red-500/20">
-        <div className="absolute inset-0 bg-red-500/5 mix-blend-overlay"></div>
-        <div className="w-12 h-12 bg-red-500/10 rounded-full flex items-center justify-center mb-4 border border-red-500/20">
-          <svg className="w-6 h-6 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <div className="bg-white/90 backdrop-blur-md rounded-2xl p-8 border border-red-200/50 shadow-sm flex flex-col items-center justify-center text-center h-full min-h-[300px] animate-fade-up relative overflow-hidden">
+        <div className="w-12 h-12 bg-red-50 text-red-600 rounded-full flex items-center justify-center mb-4 border border-red-100">
+          <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
           </svg>
         </div>
-        <h3 className="text-lg font-bold text-white mb-2 tracking-wide">Analysis Paused</h3>
-        <p className="text-red-200/80 font-medium mb-6 max-w-[250px] leading-relaxed text-sm">
+        <h3 className="text-lg font-bold text-stone-900 mb-2">Analysis Paused</h3>
+        <p className="text-stone-500 font-medium mb-6 max-w-[250px] leading-relaxed text-sm">
           {error.includes('many requests') ? "Hit limit. Try again in 10 minutes." : error}
         </p>
         <button 
-          onClick={() => setError(null)}
-          className="bg-white/10 hover:bg-white/20 text-white border border-white/10 px-6 py-2 rounded-full font-medium transition-all shadow-sm text-sm"
+          onClick={() => { setError(null); setHasStarted(false); }}
+          className="bg-stone-100 hover:bg-stone-200 text-stone-700 border border-stone-200 px-6 py-2 rounded-full font-medium transition-all shadow-sm text-sm"
         >
           Dismiss Alert
         </button>
@@ -189,10 +188,10 @@ export default function AiAnalysis({ card, details, trades, fmvSeries }) {
 
       <div className="flex flex-col gap-6 mb-6">
         {/* Terminal/JSON Block */}
-        <div className="bg-stone-900 rounded-xl p-5 shadow-inner border border-stone-800 relative overflow-hidden group animate-fade-up delay-100">
-          <div className="flex items-center justify-between mb-3 border-b border-stone-800 pb-2">
-            <span className="text-[10px] font-bold text-stone-500 uppercase tracking-widest flex items-center gap-2">
-              <svg className="w-3 h-3 text-stone-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <div className="bg-slate-900 rounded-xl p-5 shadow-inner border border-slate-800 relative overflow-hidden group animate-fade-up delay-100">
+          <div className="flex items-center justify-between mb-3 border-b border-slate-800 pb-2">
+            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+              <svg className="w-3 h-3 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 9l3 3-3 3m5 0h3M4 18h16a2 2 0 002-2V6a2 2 0 00-2-2H4a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
               Terminal Output
@@ -201,7 +200,7 @@ export default function AiAnalysis({ card, details, trades, fmvSeries }) {
               <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span> VERIFIED
             </span>
           </div>
-          <pre className="font-mono text-[11px] text-stone-300 overflow-x-auto leading-relaxed">
+          <pre className="font-mono text-[11px] text-slate-300 overflow-x-auto leading-relaxed">
             <code>
 {`{
   "asset": "${card?.name}",

@@ -79,6 +79,7 @@ export default function App() {
         onSearchAgain={() => {
           setSelectedCard(null);
           setSearchResults([]);
+          setIsAppLaunched(false);
         }} 
       />
       
