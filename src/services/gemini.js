@@ -52,7 +52,19 @@ Respond ONLY with this exact JSON (no markdown, no explanation). Ensure the insi
     generationConfig: {
       temperature: 0.3,
       maxOutputTokens: 2000,
-      responseMimeType: "application/json"
+      responseMimeType: "application/json",
+      responseSchema: {
+        type: "OBJECT",
+        properties: {
+          trend: { type: "STRING" },
+          fairValueLow: { type: "NUMBER" },
+          fairValueHigh: { type: "NUMBER" },
+          buyWindow: { type: "STRING" },
+          rating: { type: "NUMBER" },
+          insight: { type: "STRING" }
+        },
+        required: ["trend", "fairValueLow", "fairValueHigh", "buyWindow", "rating", "insight"]
+      }
     }
   };
 
@@ -69,13 +81,26 @@ Respond ONLY with this exact JSON (no markdown, no explanation). Ensure the insi
     }
 
     const data = await res.json();
-    const rawText = data.candidates?.[0]?.content?.parts?.[0]?.text || "{}";
+    let rawText = data.candidates?.[0]?.content?.parts?.[0]?.text || "{}";
     
-    // Extract JSON in case Gemini wraps it in markdown despite the mimeType
-    const jsonMatch = rawText.match(/\{[\s\S]*\}/);
-    const cleaned = jsonMatch ? jsonMatch[0] : rawText;
-    
-    const parsed = JSON.parse(cleaned);
+    // Clean markdown wrappers if any
+    rawText = rawText.replace(/```json|```/gi, '').trim();
+
+    // Aggressively replace literal newlines with spaces to avoid 'unterminated string' errors 
+    // when Gemini accidentally outputs actual line breaks inside the insight string
+    let parsed;
+    try {
+        parsed = JSON.parse(rawText);
+    } catch (parseErr) {
+        try {
+            // Fallback: strip literal newlines that break JSON.parse
+            const safeText = rawText.replace(/\n/g, ' ').replace(/\r/g, ' ');
+            parsed = JSON.parse(safeText);
+        } catch (fallbackErr) {
+            console.error("Gemini Raw Output:", rawText);
+            throw new Error(`JSON parsing failed. Raw output was: ${rawText.substring(0, 100)}...`);
+        }
+    }
 
     const requiredKeys = ['trend', 'fairValueLow', 'fairValueHigh', 'buyWindow', 'rating', 'insight'];
     for (const key of requiredKeys) {
