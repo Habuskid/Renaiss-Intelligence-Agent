@@ -52,6 +52,7 @@ Respond ONLY with this exact JSON (no markdown, no explanation). Ensure the insi
     generationConfig: {
       temperature: 0.3,
       maxOutputTokens: 2000,
+      responseMimeType: "application/json"
     }
   };
 
@@ -68,14 +69,13 @@ Respond ONLY with this exact JSON (no markdown, no explanation). Ensure the insi
     }
 
     const data = await res.json();
-    const rawText = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
-    const jsonMatch = rawText.match(/\{[\s\S]*\}/);
-    const cleaned = jsonMatch ? jsonMatch[0] : rawText.replace(/```json|```/gi, '').trim();
+    const rawText = data.candidates?.[0]?.content?.parts?.[0]?.text || "{}";
     
-    // Replace unescaped newlines in the string
-    const safeCleaned = cleaned.replace(/\n/g, ' ');
-
-    const parsed = JSON.parse(safeCleaned);
+    // Extract JSON in case Gemini wraps it in markdown despite the mimeType
+    const jsonMatch = rawText.match(/\{[\s\S]*\}/);
+    const cleaned = jsonMatch ? jsonMatch[0] : rawText;
+    
+    const parsed = JSON.parse(cleaned);
 
     const requiredKeys = ['trend', 'fairValueLow', 'fairValueHigh', 'buyWindow', 'rating', 'insight'];
     for (const key of requiredKeys) {
