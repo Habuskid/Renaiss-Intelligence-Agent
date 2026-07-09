@@ -1,7 +1,7 @@
 import { ArrowRightIcon, PresentationChartLineIcon, CpuChipIcon, CheckBadgeIcon } from '@heroicons/react/24/solid';
 
 export default function LandingPage({ onLaunch, featuredCards = [] }) {
-  const bgCards = featuredCards.slice(0, 5);
+  const bgCards = featuredCards.slice(0, 4);
   
   return (
     <div className="max-w-7xl mx-auto px-6 py-12 lg:py-24 animate-fade-up relative">
@@ -14,27 +14,31 @@ export default function LandingPage({ onLaunch, featuredCards = [] }) {
             { top: '20%', right: '10%', delay: '1.5s', scale: '0.9', rotate: '15deg' },
             { bottom: '30%', left: '15%', delay: '0.5s', scale: '0.85', rotate: '-8deg' },
             { bottom: '35%', right: '20%', delay: '2s', scale: '0.75', rotate: '10deg' },
-            { top: '50%', right: '5%', delay: '1s', scale: '0.8', rotate: '-5deg' },
           ];
           const pos = positions[index] || positions[0];
 
           return (
             <div 
               key={card.href || card.name}
-              className="absolute pointer-events-auto group z-0 hover:z-50"
+              className="absolute pointer-events-auto z-0 hover:z-50"
               style={{
                 top: pos.top,
                 bottom: pos.bottom,
                 left: pos.left,
                 right: pos.right,
-                transform: `scale(${pos.scale}) rotate(${pos.rotate})`
               }}
             >
+              {/* The wrapper handles the continuous floating animation and initial static scale/rotate. 
+                  This completely isolates it from the hover state to prevent glitching. */}
               <div 
-                className="animate-float-3d opacity-60 transition-all duration-500 group-hover:opacity-100 cursor-pointer"
-                style={{ animationDelay: pos.delay }}
+                className="animate-float-3d w-48"
+                style={{ 
+                  animationDelay: pos.delay,
+                  transform: `scale(${pos.scale}) rotate(${pos.rotate})`
+                }}
               >
-                <div className="bg-white p-3 rounded-2xl shadow-xl border border-stone-200 w-48 transition-all duration-500 group-hover:scale-110 group-hover:-translate-y-4">
+                {/* The inner element handles the fast hover pop-up transition */}
+                <div className="bg-white p-3 rounded-2xl shadow-xl border border-stone-200 w-full opacity-60 hover:opacity-100 hover:scale-110 hover:-translate-y-4 transition-all duration-200 ease-out cursor-pointer">
                   <div className="w-full h-56 rounded-lg overflow-hidden bg-stone-100 mb-3 shadow-inner">
                     <img 
                       src={card.imageUrlThumb || card.imageUrl} 
